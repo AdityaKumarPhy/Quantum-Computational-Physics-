@@ -1,0 +1,176 @@
+\documentclass[11pt,a4paper]{article}
+
+% --- Packages ---
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{physics} % Critical for physics notation (bra-ket, derivatives, expectation values, etc.)
+\usepackage[margin=1in]{geometry}
+\usepackage{enumitem}
+\usepackage[colorlinks=true, linkcolor=blue, urlcolor=cyan]{hyperref}
+\usepackage{booktabs}
+\usepackage{microtype}
+
+% --- Document Metadata ---
+\title{Quantum Computational Physics \\ \large Problem Statements}
+\author{Numerical Methods in Quantum Mechanics}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\tableofcontents
+\newpage
+
+% --- Problem 1 ---
+\section{Problem 1: The Truncated Parabola in a Harmonic Oscillator}
+\label{sec:problem1}
+
+\subsection*{Problem Statement}
+Consider a particle of mass $m$ subject to a one-dimensional quantum harmonic oscillator potential:
+\begin{equation}
+    V(x) = \frac{1}{2}m\omega^2x^2
+\end{equation}
+
+At time $t=0$, the particle is prepared in the initial state:
+\begin{equation}
+    \psi(x,0) = 
+    \begin{cases} 
+        N(A - Bx^2) & \text{for } x^2 \le \frac{A}{B} \\ 
+        0 & \text{for } x^2 > \frac{A}{B} 
+    \end{cases}
+\end{equation}
+where $A$ and $B$ are positive real constants, and $N$ is the normalization constant.
+
+\subsection*{Analytical Tasks}
+\begin{enumerate}[label=\textbf{\arabic*.}]
+    \item \textbf{Normalization Constant:} Determine the normalization constant $N$ in terms of $A$ and $B$ by enforcing the normalization condition:
+    \begin{equation}
+        \int_{-\infty}^{\infty} |\psi(x,0)|^2 \dd{x} = 1
+    \end{equation}
+    
+    \item \textbf{Eigenstate Expansion:} Calculate the probability $P_n = |c_n|^2$ of finding the particle in the energy eigenstate $\ket{\phi_n}$ with energy eigenvalue $E_n = \left(n + \frac{1}{2}\right)\hbar\omega$. The expansion coefficients are given by the projection:
+    \begin{equation}
+        c_n = \braket{\phi_n}{\psi(x,0)} = \int_{-\sqrt{A/B}}^{\sqrt{A/B}} \phi_n^*(x) \psi(x,0) \dd{x}
+    \end{equation}
+    where $\phi_n(x)$ are the Hermite-Gaussian eigenfunctions of the quantum harmonic oscillator.
+
+    \item \textbf{Time Evolution:} Write down the formal expression for the time-evolved wave function $\psi(x,t)$ for $t > 0$:
+    \begin{equation}
+        \psi(x,t) = \sum_{n=0}^{\infty} c_n \phi_n(x) e^{-i E_n t / \hbar}
+    \end{equation}
+\end{enumerate}
+
+\newpage
+
+% --- Problem 2 ---
+\section{Problem 2: The Shifted and Squeezed Gaussian}
+\label{sec:problem2}
+
+\subsection*{Problem Statement}
+A particle of mass $m$ in a harmonic oscillator potential $V(x) = \frac{1}{2}m\omega^2x^2$ is initially prepared in a displaced (shifted) and squeezed Gaussian wave packet:
+\begin{equation}
+    \psi(x,0) = N e^{-\frac{(x-x_0)^2}{a^2}}
+\end{equation}
+where:
+\begin{itemize}
+    \item $x_0$ is the initial spatial displacement (shift) of the wave packet center.
+    \item $a$ is the initial width of the wave packet, such that $a \neq \sqrt{\frac{\hbar}{m\omega}}$ (meaning the wave packet width differs from the ground-state characteristic length scale $x_c = \sqrt{\frac{\hbar}{m\omega}}$, resulting in a squeezed state).
+    \item $N$ is the normalization constant.
+\end{itemize}
+
+\subsection*{Analytical Tasks}
+\begin{enumerate}[label=\textbf{\arabic*.}]
+    \item \textbf{Time Evolution:} Determine the full time-evolved wave packet $\psi(x,t)$ under the harmonic oscillator Hamiltonian. Show that the wave packet remains Gaussian in form:
+    \begin{equation}
+        \psi(x,t) = N(t) e^{-A(t)(x - \langle x \rangle(t))^2 + \frac{i}{\hbar} \langle p \rangle(t) x + i \phi(t)}
+    \end{equation}
+    where $A(t)$ is a complex parameter related to the time-dependent width and phase.
+
+    \item \textbf{Expectation Values:} Calculate the expectation values of position $\langle x \rangle(t)$ and momentum $\langle p \rangle(t)$ as functions of time. Verify that they satisfy Ehrenfest's theorem and display classical oscillatory behavior:
+    \begin{align}
+        \langle x \rangle(t) &= x_0 \cos(\omega t) \\
+        \langle p \rangle(t) &= -m\omega x_0 \sin(\omega t)
+    \end{align}
+
+    \item \textbf{Uncertainty Relations and Breathing Mode:} 
+    Determine the position uncertainty $\Delta x(t) = \sqrt{\langle x^2 \rangle - \langle x \rangle^2}$ and momentum uncertainty $\Delta p(t)$. Show that the wave packet width oscillates (or "breathes") at a frequency of $2\omega$.
+\end{enumerate}
+
+\newpage
+
+% --- Problem 3 ---
+\section{Problem 3: Tunneling in the Quartic Double Well}
+\label{sec:problem3}
+
+\subsection*{Problem Statement}
+A particle of mass $m$ moves in a one-dimensional quartic double-well potential described by:
+\begin{equation}
+    V(x) = -\frac{1}{2}\alpha x^2 + \beta x^4
+\end{equation}
+where $\alpha$ and $\beta$ are positive constants. This potential features two symmetric minima at $x_{\text{min}} = \pm \sqrt{\frac{\alpha}{4\beta}}$ separated by a potential barrier of height $V_0 = \frac{\alpha^2}{16\beta}$ at $x = 0$.
+
+\subsection*{Physical and Computational Tasks}
+\begin{enumerate}[label=\textbf{\arabic*.}]
+    \item \textbf{Eigenstate Calculation:} Find the lowest energy eigenstates by solving the time-independent Schrödinger equation:
+    \begin{equation}
+        \left[ -\frac{\hbar^2}{2m} \frac{\dd^2}{\dd{x}^2} + V(x) \right] \psi_n(x) = E_n \psi_n(x)
+    \end{equation}
+    numerically on a discretized spatial grid of size $N$ over the domain $x \in [-L, L]$ using finite difference approximations.
+
+    \item \textbf{Energy Eigenvalues and Degeneracy Splitting:} 
+    Determine the ground state energy $E_0$ (symmetric state, even parity) and the first excited state energy $E_1$ (antisymmetric state, odd parity). Calculate the energy splitting:
+    \begin{equation}
+        \Delta E = E_1 - E_0
+    \end{equation}
+    Explain how quantum tunneling lifts the classical degeneracy of the two isolated wells.
+
+    \item \textbf{Tunneling Time:} 
+    Construct a state initially localized in the right well:
+    \begin{equation}
+        \psi_{R}(x,0) = \frac{1}{\sqrt{2}} \left( \psi_0(x) + \psi_1(x) \right)
+    \end{equation}
+    Show that the wave function evolves in time as:
+    \begin{equation}
+        \psi(x,t) = \frac{1}{\sqrt{2}} \left( \psi_0(x)e^{-iE_0t/\hbar} + \psi_1(x)e^{-iE_1t/\hbar} \right)
+    \end{equation}
+    Calculate the tunneling time $\tau$ required for the particle to tunnel completely from the right well to the left well, where:
+    \begin{equation}
+        \tau = \frac{\pi\hbar}{\Delta E}
+    \end{equation}
+
+    \item \textbf{Grid Convergence Study:}
+    Conduct a numerical grid convergence test by solving the eigenvalue problem for varying spatial discretization grid points $N \in \{200, 400, 800, 1600, 3200\}$ to verify the stability and accuracy of the computed eigenvalues $E_0$ and energy splitting $\Delta E$.
+\end{enumerate}
+\newpage
+%--Problem 4----
+\section{Problem 4: Numerical Solution of the Schrödinger Equation}
+\label{sec:problem4}
+
+This section focuses on the numerical solution of the Time-Independent Schrödinger Equation (TISE) for different potentials, followed by the analysis of quantum dynamics using the computed eigenstates.
+
+\subsection{Problem 1: Quantum Harmonic Oscillator}
+
+\begin{enumerate}
+    \item Compute the first 20 eigenvalues (energy levels) and their corresponding eigenfunctions of the quantum harmonic oscillator.
+    \item Compare the computed eigenvalues with the exact analytical solutions and comment on the accuracy of the numerical method.
+\end{enumerate}
+
+\subsection{Problem 2: Quartic Potential}
+
+\begin{enumerate}
+    \item Compute the eigenvalues and eigenfunctions of the quartic potential using the same numerical method.
+    \item Verify the numerical consistency of the solution by varying the computational grid size and examining the convergence of the eigenvalues and eigenfunctions.
+\end{enumerate}
+
+\subsection{Problem 3: Gaussian Wave Packet Evolution in a Double-Well Potential}
+
+\begin{enumerate}
+    \item Consider a Gaussian wave packet initially localized near the left minimum of the double-well potential.
+    \item Expand the Gaussian wave packet in terms of the first 20 energy eigenstates.
+    \item Examine whether the expansion coefficients for higher-energy states become negligibly small as the quantum number increases. If not, include additional eigenstates until the expansion converges.
+    \item Using the converged expansion, compute and plot the time evolution of the wavefunction, $\psi(x,t)$.
+    \item Analyze the resulting dynamics and identify the quantum tunneling effect. Comment on how the tunneling behavior changes for a deeper double-well potential.
+\end{enumerate}
+
+\end{document}
