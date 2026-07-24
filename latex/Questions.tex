@@ -150,6 +150,7 @@ where $\alpha$ and $\beta$ are positive constants. This potential features two s
 
 %--Problem 4----
 \section{Problem 4: Numerical Investigation of Quantum Tunneling in a Quartic Double-Well Potential using the \textbf{Eigenstate Expansion}}
+\textit{Notebook: \texttt{04 Quantum Tunneling in Double Well Potential.ipynb}}
 \label{sec:problem4}
 
 
@@ -218,14 +219,14 @@ To investigate quantum tunneling dynamically, an initial Gaussian wave packet wi
 \begin{equation}
 \Psi(x,0)
 =
-A
-\exp\left[
--\frac{(x-x_0)^2}{2\sigma^2}
+A\,
+\exp\!\left[
+-\frac{(x-x_0)^2}{4\sigma^2}
 \right]
 e^{ik_0x},
 \end{equation}
 
-where $A$ is the normalization constant, $x_0$ denotes the left potential minimum, $\sigma$ is the packet width, and $k_0$ is the initial wave number.
+where $A$ is the normalization constant, $x_0=-\sqrt{\alpha/4\beta}$ is the left potential minimum, $\sigma=0.5$ is the packet width, and $k_0=0$ (particle initially at rest).
 
 The initial wave packet will be expanded in terms of the stationary eigenstates,
 
@@ -256,18 +257,49 @@ e^{-iE_nt/\hbar}.
 The dynamical investigation consists of
 
 \begin{enumerate}
-    \item Locating the minimum of the double-well potential.
-    \item Constructing a Gaussian wave packet localized near the left minimum.
-    \item Expanding the wave packet in the stationary eigenstate basis.
-    \item Computing the expansion coefficients $c_n$.
-    \item Plotting the probability distribution $|c_n|^2$.
-    \item Computing the time evolution of $\Psi(x,t)$.
-    \item Visualizing the probability density $|\Psi(x,t)|^2$ through plots and animations.
-    \item Analyzing the tunneling dynamics between the two wells and relating the observed behavior to the computed energy spectrum.
+    \item Locating the left minimum: $x_0 = -\sqrt{\alpha/4\beta}$.
+    \item Constructing and normalizing the Gaussian wave packet.
+    \item Expanding in the stationary eigenstate basis and computing $c_n$.
+    \item Performing a completeness check: $\displaystyle\sum_{n=0}^{19}|c_n|^2 = 0.9992$, confirming that 20 states capture $99.9\%$ of the packet.
+    \item Plotting $|c_n|^2$, which shows that $|c_0|^2\approx|c_1|^2\approx 0.49$, establishing the two-state dominance of the tunneling dynamics.
+    \item Computing the time evolution $\Psi(x,t)$ and verifying reconstruction at $t=0$: reconstruction error $= 2.75\times10^{-2}$, consistent with the $0.08\%$ basis leakage.
+    \item Determining the tunneling period from $\Delta E = E_1 - E_0 \approx 1.49\times10^{-5}$:
+    \begin{equation}
+        T = \frac{2\pi\hbar}{\Delta E} \approx 420{,}776.
+    \end{equation}
+    \item Animating $|\Psi(x,t)|^2$ over one full tunneling period.
+    \item Plotting $P_{\text{left}}(t)$ and $P_{\text{right}}(t)$ over two full cycles, confirming sinusoidal anti-correlated oscillation with the computed period $T$.
 \end{enumerate}
 
-The successful completion of these three stages provides a comprehensive numerical framework for solving the one-dimensional Schrödinger equation, validating the computational approach, and investigating quantum tunneling phenomena in the quartic double-well potential.
-This section focuses on the numerical solution of the Time-Independent Schrödinger Equation (TISE) for different potentials, followed by the analysis of quantum dynamics using the computed eigenstates.
+\subsection{Stage IV: Deep-Well Simplification}
+
+To probe the professor's remark that ``things should simplify for a deep well,'' the analysis is repeated for $\alpha \in \{10,\,20,\,50\}$ with $\beta=0.5$ fixed. As $\alpha$ increases:
+
+\begin{enumerate}
+    \item The barrier height $V_0 = \alpha^2/16\beta$ grows, making the well deeper and the barrier wider.
+    \item The energy splitting $\Delta E$ shrinks exponentially (WKB prediction: $\Delta E\propto e^{-\gamma}$ where $\gamma=\int\sqrt{2m(V-E)}\,dx/\hbar$).
+    \item The basis weight concentrates: $|c_0|^2+|c_1|^2\to 1$, so the full twenty-state expansion
+    \begin{equation}
+        \Psi(x,t)=\sum_{n=0}^{19}c_n\psi_n(x)\,e^{-iE_nt/\hbar}
+    \end{equation}
+    collapses into the exact two-state problem
+    \begin{equation}
+        \Psi(x,t)\approx c_0\psi_0(x)\,e^{-iE_0t/\hbar}+c_1\psi_1(x)\,e^{-iE_1t/\hbar}.
+    \end{equation}
+\end{enumerate}
+
+Physically, tunneling in a deep well is governed by a single number $\Delta E$: the dynamics are slower, cleaner, and entirely describable by the interference of the symmetric and antisymmetric ground states.
+
+The successful completion of all four stages yields a comprehensive numerical framework. The key findings are summarised below.
+
+\begin{itemize}
+    \item \textbf{Validation (Stage~I):} Numerical eigenvalues agree with the exact harmonic-oscillator spectrum $E_n=(n+\tfrac{1}{2})\hbar\omega$ to within $\sim10^{-4}$ for the lowest twenty states, with error growing with $n$ as expected from finite-difference discretization.
+    \item \textbf{Grid convergence (Stage~II):} Eigenvalues of the double well stabilize by $N=1600$ grid points, establishing grid independence. The ground-state doublet splitting $\Delta E\approx1.49\times10^{-5}$ is the numerical signature of quantum tunneling.
+    \item \textbf{Wave-packet dynamics (Stage~III):} The Gaussian expands almost entirely into the two lowest eigenstates. The resulting probability density oscillates between the wells with period $T\approx420{,}776$ in natural units, confirmed by both the animation and the left/right probability plot.
+    \item \textbf{Deep-well limit (Stage~IV):} Increasing $\alpha$ drives $\Delta E\to 0$ exponentially and $|c_0|^2+|c_1|^2\to1$, reducing the dynamics to a pure two-state system and confirming the theoretical prediction.
+\end{itemize}
+
+\noindent In summary, quantum tunneling is the constructive and destructive interference of two nearly degenerate energy eigenstates; it can be fully understood, computed, and visualised using finite-difference diagonalization and eigenstate expansion on a spatial grid.
 
 
 \end{document}
