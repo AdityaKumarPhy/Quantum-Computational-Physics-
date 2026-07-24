@@ -140,37 +140,134 @@ where $\alpha$ and $\beta$ are positive constants. This potential features two s
     \end{equation}
 
     \item \textbf{Grid Convergence Study:}
-    Conduct a numerical grid convergence test by solving the eigenvalue problem for varying spatial discretization grid points $N \in \{200, 400, 800, 1600, 3200\}$ to verify the stability and accuracy of the computed eigenvalues $E_0$ and energy splitting $\Delta E$.
+    Conduct a numerical grid convergence test by solving the eigenvalue problem for varying spatial discretization grid points
+    \[
+        N \in \{200,\; 400,\; 800,\; 1600,\; 3200\}
+    \]
+    to verify the stability and accuracy of the computed eigenvalues $E_0$ and energy splitting $\Delta E$.
 \end{enumerate}
 \newpage
+
 %--Problem 4----
-\section{Problem 4: Numerical Solution of the Schrödinger Equation}
+\section{Problem 4: Numerical Investigation of Quantum Tunneling in a Quartic Double-Well Potential using the \textbf{Eigenstate Expansion}}
 \label{sec:problem4}
 
+
+The one-dimensional time-independent Schrödinger equation describes the quantum behavior of a particle of mass $m$ moving under the influence of a potential $V(x)$,
+
+\begin{equation}
+-\frac{\hbar^2}{2m}\frac{d^2\psi(x)}{dx^2}+V(x)\psi(x)=E\psi(x),
+\end{equation}
+
+where $\psi(x)$ is the wavefunction and $E$ is the corresponding energy eigenvalue. Analytical solutions to this equation exist only for a limited number of idealized potentials. For more realistic systems, numerical techniques become indispensable.
+
+One important quantum system is the quartic double-well potential,
+
+\begin{equation}
+V(x)=-\frac{1}{2}\alpha x^2+\beta x^4,
+\end{equation}
+
+which exhibits two stable minima separated by a finite potential barrier. Although classically a particle localized in one well cannot cross the barrier if its energy is below the barrier height, quantum mechanics predicts the phenomenon of tunneling, whereby the particle has a finite probability of appearing in the opposite well. This phenomenon gives rise to characteristic energy-level splitting and time-dependent oscillatory dynamics.
+
+The primary objective of this work is to develop and validate a finite-difference numerical solver for the one-dimensional Schrödinger equation and subsequently employ it to investigate the stationary and dynamical properties of a particle confined in a quartic double-well potential.
+
+The study is divided into three stages.
+
+\subsection{Stage I: Validation of the Numerical Solver}
+
+The numerical solver will first be validated using the harmonic oscillator potential,
+
+\begin{equation}
+V(x)=\frac{1}{2}m\omega^2x^2,
+\end{equation}
+
+whose exact analytical solutions are well established. The validation consists of
+
+\begin{enumerate}
+    \item Computing the first twenty energy eigenvalues.
+    \item Computing the corresponding twenty eigenfunctions.
+    \item Constructing an error table by comparing numerical and analytical eigenvalues.
+    \item Plotting numerical and analytical energy spectra for comparison.
+    \item Comparing numerical and analytical eigenfunctions graphically.
+\end{enumerate}
+
+Successful agreement with the analytical solution verifies the correctness, accuracy, and convergence of the numerical implementation.
+
+\subsection{Stage II: Eigenstate Analysis of the Quartic Double-Well Potential}
+
+Following validation, the numerical solver will be applied to the quartic double-well potential,
+
+\begin{equation}
+V(x)=-\frac{1}{2}\alpha x^2+\beta x^4.
+\end{equation}
+
+The objectives of this stage are
+
+\begin{enumerate}
+    \item Compute the first twenty eigenvalues.
+    \item Compute the corresponding twenty eigenfunctions.
+    \item Perform a grid-convergence study to verify numerical stability.
+    \item Visualize the potential together with the bound-state wavefunctions.
+    \item Analyze the energy spectrum, with particular emphasis on tunneling-induced energy splitting.
+\end{enumerate}
+
+\subsection{Stage III: Gaussian Wave Packet Dynamics}
+
+To investigate quantum tunneling dynamically, an initial Gaussian wave packet will be constructed near the left minimum of the double-well potential,
+
+\begin{equation}
+\Psi(x,0)
+=
+A
+\exp\left[
+-\frac{(x-x_0)^2}{2\sigma^2}
+\right]
+e^{ik_0x},
+\end{equation}
+
+where $A$ is the normalization constant, $x_0$ denotes the left potential minimum, $\sigma$ is the packet width, and $k_0$ is the initial wave number.
+
+The initial wave packet will be expanded in terms of the stationary eigenstates,
+
+\begin{equation}
+\Psi(x,0)=\sum_{n=0}^{N-1} c_n\phi_n(x),
+\end{equation}
+
+where the expansion coefficients are
+
+\begin{equation}
+c_n
+=
+\int_{-\infty}^{\infty}
+\phi_n^*(x)\Psi(x,0)\,dx.
+\end{equation}
+
+The subsequent time evolution is obtained from
+
+\begin{equation}
+\Psi(x,t)
+=
+\sum_{n=0}^{N-1}
+c_n
+\phi_n(x)
+e^{-iE_nt/\hbar}.
+\end{equation}
+
+The dynamical investigation consists of
+
+\begin{enumerate}
+    \item Locating the minimum of the double-well potential.
+    \item Constructing a Gaussian wave packet localized near the left minimum.
+    \item Expanding the wave packet in the stationary eigenstate basis.
+    \item Computing the expansion coefficients $c_n$.
+    \item Plotting the probability distribution $|c_n|^2$.
+    \item Computing the time evolution of $\Psi(x,t)$.
+    \item Visualizing the probability density $|\Psi(x,t)|^2$ through plots and animations.
+    \item Analyzing the tunneling dynamics between the two wells and relating the observed behavior to the computed energy spectrum.
+\end{enumerate}
+
+The successful completion of these three stages provides a comprehensive numerical framework for solving the one-dimensional Schrödinger equation, validating the computational approach, and investigating quantum tunneling phenomena in the quartic double-well potential.
 This section focuses on the numerical solution of the Time-Independent Schrödinger Equation (TISE) for different potentials, followed by the analysis of quantum dynamics using the computed eigenstates.
 
-\subsection{Problem 1: Quantum Harmonic Oscillator}
-
-\begin{enumerate}
-    \item Compute the first 20 eigenvalues (energy levels) and their corresponding eigenfunctions of the quantum harmonic oscillator.
-    \item Compare the computed eigenvalues with the exact analytical solutions and comment on the accuracy of the numerical method.
-\end{enumerate}
-
-\subsection{Problem 2: Quartic Potential}
-
-\begin{enumerate}
-    \item Compute the eigenvalues and eigenfunctions of the quartic potential using the same numerical method.
-    \item Verify the numerical consistency of the solution by varying the computational grid size and examining the convergence of the eigenvalues and eigenfunctions.
-\end{enumerate}
-
-\subsection{Problem 3: Gaussian Wave Packet Evolution in a Double-Well Potential}
-
-\begin{enumerate}
-    \item Consider a Gaussian wave packet initially localized near the left minimum of the double-well potential.
-    \item Expand the Gaussian wave packet in terms of the first 20 energy eigenstates.
-    \item Examine whether the expansion coefficients for higher-energy states become negligibly small as the quantum number increases. If not, include additional eigenstates until the expansion converges.
-    \item Using the converged expansion, compute and plot the time evolution of the wavefunction, $\psi(x,t)$.
-    \item Analyze the resulting dynamics and identify the quantum tunneling effect. Comment on how the tunneling behavior changes for a deeper double-well potential.
-\end{enumerate}
 
 \end{document}
